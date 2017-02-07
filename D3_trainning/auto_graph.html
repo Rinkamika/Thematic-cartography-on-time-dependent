@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My first Graph!!!</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+		<style>
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: teal;
+				margin-right: 1px;
+			}
+		</style>
+	</head>
+	<body>
+		<div></div>
+		<script type="text/javascript">
+			var dataset=[]; //Initialize an empty array
+			for (var i=0; i<35; i++) {
+				var newNumber=Math.random()*30;
+				dataset=dataset.concat(newNumber);
+			}
+			d3.select("body").selectAll("div").data(dataset).enter().append("div").attr("class", "bar").style("height", function(d) {
+															var barHeight=d*5;
+															return barHeight+"px";
+															});
+		</script>
+	</body>
+</html>

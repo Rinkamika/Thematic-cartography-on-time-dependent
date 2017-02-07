@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My first Graph!!!</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+		<script src="neighborhoods.js"></script>
+		<script src="relectricity.js"></script>
+		<script src="rodents.js"></script>
+
+		<style>
+			body {
+				position: absolute;;
+				font-family: "Proxima Nova", "Montserrat", sans-serif;
+			}
+			h1, h2, h3{
+				position: absolute;
+				left: 10px;
+				font-size: 1.3em;
+				font-weight: 100;
+			}
+			h2 {
+				top: 30px;
+				font-size: 1em;
+			}
+			h3 {
+				top: 50px;
+			}
+
+			#neighborhoods path:hover {
+				fill: #666;
+			}
+			
+			.hover {
+				fill: yellow;
+			}
+			#sliderContainer {
+				text-align: center;
+				position: relative;
+				top: 600px;
+			}
+		</style>
+
+	</head>
+	<body>
+		<h1>Rodent Incidents in Boston</h1>
+		<h2></h2>
+		<h3></h3>
+		<div id="sliderContainer">
+			<input id="timeslide" type="range" min="0" max="11" value="0" step="1"/><br>
+			<span id="range">January</span>
+		</div>
+		<script type="text/javascript">
+			var width = 1000;
+			var height = 800;
+
+			//TimeSlider
+			var inputValue=null;
+			var month=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+			var color=d3.scaleThreshold()
+				.domain([0.5, 2, 5, 10, 30, 40])
+				.range(["#ff2", "#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
+			var svg = d3.select( "body" )
+			  .append( "svg" )
+			  .attr( "width", width )
+			  .attr( "height", height );
+
+			var neighborhoods = svg.append( "g" ).attr("id", "neighborhoods");
+
+			var albersProjection = d3.geoAlbers()
+			  .scale( 1000 )
+			  .rotate( [-5,0] )
+			  .center( [0, 51.415] )
+			  .translate( [width/2,height/2] );
+
+			var geoPath = d3.geoPath()
+			.projection( albersProjection );
+
+			neighborhoods.selectAll( "path" )
+			  .data( relectricity_json.features )
+			  .enter()
+			  .append( "path" )
+			  .attr( "fill", function(d) {
+			  	return color(d.properties.density)
+			  })
+			  .attr( "d", geoPath )
+			  .on("mouseover", function(d) {
+			  	d3.select("h3").text(d.properties.density);
+			  });
+			
+			var rodents=svg.append("g");
+
+			var path=rodents.selectAll("path")
+			 .data(rodents_json.features)
+			 .enter()
+			 .append("path")
+			 .attr("fill", initialDate)
+			 .attr("stroke", "#ccc")
+			 .attr("d", geoPath)
+			 .attr("class", "incident")
+			 .on("click", function() {
+			 	d3.select(this)
+			 	.attr("opacity", 1)
+			 	.transition()
+			 	.duration(1000)
+			 	.attr("x", width*Math.round(Math.random()))
+			 	.attr("y", height*Math.round(Math.random()))
+			 	.attr("opacity", 0);
+			 })
+			 .on("mouseover", function(d){
+			 	d3.select("h2").text(d.properties.LOCATION_STREET_NAME);
+			 	d3.select(this).attr("class", "incident hover");
+			 })
+			 .on("mouseout", function(d) {
+			 	d3.select("h2").text("");
+			 	d3.select(this).attr("class", "incident");
+			 });
+
+			
+			//When the input range changes update the value
+			d3.select("#timeslide").on("input", function() {
+				update(+this.value);
+			});
+
+			//Update the fill of each SVG of class "incident" with value
+			function update(value) {
+				document.getElementById("range").innerHTML=month[value];
+				inputValue=month[value];
+				d3.selectAll(".incident").attr("fill", dateMatch);
+			}
+
+			function dateMatch(data, value) {
+				var d=new Date(data.properties.OPEN_DT);
+				var m=month[d.getMonth()];
+				if (inputValue==m) {
+					this.parentElement.appendChild(this);
+					return "red";
+				} else {
+					return "#999";
+				};
+			}
+
+			function initialDate(d, i) {
+				var d=new Date(d.properties.OPEN_DT);
+				var m=month[d.getMonth()];
+				if (m=="January") {
+					this.parentElement.appendChild(this);
+					return "red";
+				} else {
+				return "#999";
+				};
+			}
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<!-- Encoding -->
+		<meta charset="UTF-8">
+		<!-- Description of Web Page -->
+		<meta name="description" content="Thematic Visualization">
+		<!-- Keywords important for Google -->
+		<meta name="keywords" content="map, dynamic map, spanish crisis, thematic map">
+		<!-- Author information -->
+		<meta name="author" content="Macarena Parrizas Siles">
+		<!-- Title of the website on the tab -->
+		<title>Spanish Crisis</title>
+		<!-- Icon of the website -->
+		<link href="img\map.png" rel="shortcut icon" type="image/png">
+
+		<!-- CSS Styling -->
+		<!-- Own css -->
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+
+
+		<!-- JavaScripts -->
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="js/peninsula.js"></script>
+		<script src="js/canarias.js"></script>
+		<script src="js/houses_built.js"></script>
+		<script src="js/free_market.js"></script>
+		<script src="js/gdp.js"></script>
+
+		<script type="text/javascript" src="js/app.js"></script>
+
+		<!-- Legend Window -->
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	</head>
+	<body>
+		<header>
+			<h2>
+				RELATIONSHIP BETWEEN THE UNEMPLOYMENT RATE, FREE-MARKET HOUSING, NUMBER OF HOUSES BUILT AND THE GDP OF THE SPANISH FINANTIAL SITUATION FROM 2002 TO 2015
+			</h2>
+		</header>
+		<!--Map left-->
+		<section id="map_left" class="map_left"> 
+
+			<div id="map" class="map"></div> <!-- Container with the map -->
+			<div id="canarias_container" class="canarias_container"></div>
+			<span id="range">2002</span>
+			<div id="sliderContainer" class="sliderContainer">
+				<input id="timeslide" type="range" min="0" max="13" value="0" step="1"/>
+				<button type="button" id="start" class="start">
+					<p>Play</p>
+				</button>
+				<button type="button" id="stop" class="stop">
+					<p>Stop</p>
+				</button>
+			</div>
+		</section>
+		<!--Sections-->
+		<section id="map_right" class="map_right"> 
+			<form action="" id="radio_button" class="radio_button">
+				<input type="radio" name="choose" value="Legend" checked>
+				<label for="Legend" style="font: 16px Georgia, serif">Legend</label>
+				<input type="radio" name="choose" value="Statistics">
+				<label for="Statistics" style="font: 16px Georgia, serif">Statistics</label>
+				<input type="radio" name="choose" value="MapComparison">
+				<label for="MapComparison" style="font: 16px Georgia, serif">Map Comparison</label>
+				
+				<button type="button" id="OpenLegend" class="OpenLegend" onclick="activate_legend()">Open Legend </button>
+				<button type="button" id="fullscreen" class="fullscreen" onclick="launchIntoFullscreen(document.documentElement)">
+					<p>Fullscreen</p>
+				</button>
+			</form>
+
+			<section id="section_legend" class="section_legend">
+					<h1>
+						Legend
+					</h1>
+					
+					<div id="corop_legend" class="corop_legend">
+						<h2>Unemployment (% of Active Population)</h2>
+					</div>
+					<div id="nHouses_legend" class="nHouses_legend">
+						<h2>Nº Houses Built</h2>
+					</div>
+					<div id="fMarket_legend" class="fMarket_legend">
+						<h2>Free-market Housing (€/m<sup>2</sup>)</h2>
+					</div>
+
+					<div id="gdp_legend" class="gdp_legend">
+						<h2>Ground Domestic Product (€ per Capita)</h2>
+					</div>
+
+					<div id="scale" class="scale">
+						<h2>Graphic Scale</h2>
+					</div>
+			</section>
+
+			<section id="section_stats" class="section_select">
+				<h1 id="section_stats_title">
+					Statistics
+				</h1>
+				<div id="fMarket_bar" class="fMarket_bar">
+					<h2> Free-market Housing (€/m²)</h2>
+					<p id="fMarket_value"></p>
+				</div>
+				<div id="gdp_bar" class="gdp_bar">
+					<h2> GDP (€/capita)</h2>
+					<p id="gdp_value"></p>
+				</div>
+				<div id="hBuilt_bar" class="hBuilt_bar">
+					<h2> Number of houses built (nº)</h2>
+					<p id="nHouses_value"></p>
+				</div>
+				<div id="unemp_bar" class="unemp_bar">
+					<h2> Unemployment (%)</h2>
+					<p id="unemp_value"></p>
+				</div>
+			</section>
+
+			<section id="section_compare" class="section_select"> 
+
+				<div id="map_comparisson" class="map_compare"></div> <!-- Container with the map -->
+				<div id="canarias_container_comparisson" class="canarias_container_comparisson"></div>
+				
+				<div id="sliderContainer" class="sliderContainer">
+					<input id="timeslide2" type="range" min="0" max="13" value="0" step="1"/>
+					<span id="range2">2002</span>
+				</div>
+			</section>
+			<div id="dialog" class="ui-widget-content">
+			<figure><img class="legend_img" src="img/legend.png"></figure>
+			<div>
+		</section>
+		<footer>
+			<h2>
+				(C) Macarena Parrizas Siles. Source: Instituto Nacional de Estadística (INE). Base Map: Instituto Geográfico Nacional (cnig.es)
+			</h2>
+			<p>
+				Hochschule Karlsruhe – Technik und Wirtschaft.
+				International Master in Geomatics
+			</p>
+			<h3>
+				WS 2016/2017
+			</h3>
+		</footer>
+		<script src="js/app.js"></script>
+	</body>
+</html>

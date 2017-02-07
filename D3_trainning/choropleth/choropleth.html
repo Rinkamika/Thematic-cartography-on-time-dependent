@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My first Graph!!!</title>
+		<script type="text/javascript" src="d3/d3.js"></script>
+		<script src="https://d3js.org/d3-array.v1.min.js"></script>
+		<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+		<script src="https://d3js.org/d3-queue.v3.min.js"></script>
+		<script src="https://d3js.org/topojson.v1.min.js"></script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<div></div>
+		<script type="text/javascript">
+			var width=720;
+			var height=500;
+
+			var projection=d3.geoAlbersUsa()
+				.scale(1000)
+				.translate([width/2, height/2]);
+
+			var path=d3.geoPath()
+				.projection(projection);
+
+			var svg=d3.select("body").append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var color=d3.scaleThreshold()
+				.domain([0.02, 0.04, 0.06, 0.08, 0.10])
+				.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
+			//Queue up dataset using d3 Queue
+			d3.queue()
+				.defer(d3.json, "http://duspviz.mit.edu/_assets/data/us.json") //Load US Countries
+				.await(ready); //Run 'ready' when JSONs are loaded
+
+			//Ready function, runs when data is loaded
+			function ready(error, us) {
+				if(error) throw error;
+
+				svg.append("g")
+					.attr("class", "counties")
+					.selectAll("path")
+					.data(topojson.feature(us, us.objects.counties).features) //Bind TopoJSON data elements
+					.enter().append("path")
+					.attr("d", path)
+					.style("fill", "white")
+					.style("stroke", "black");
+			}
+
+		</script>
+	</body>
+</html>
